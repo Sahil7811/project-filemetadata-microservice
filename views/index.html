@@ -1,34 +1,232 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>File Metadata Microservice</title>
+    <link
+      rel="shortcut icon"
+      href="https://cdn.freecodecamp.org/universal/favicons/favicon-32x32.png"
+      type="image/x-icon"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="/public/style.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body>
+    <div class="particles-container">
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+      <div class="particle"></div>
+    </div>
 
-<html>
-   <head>
-      <title>File Metadata</title>
-      <link rel="shortcut icon" href="https://cdn.freecodecamp.org/universal/favicons/favicon-32x32.png" type="image/x-icon"/>
-      <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
-      <link href="/public/style.css" rel="stylesheet" type="text/css">
-   </head>
+    <div class="main-container">
+      <div class="glass-card">
+        <div class="header-section">
+          <h1 class="main-title">
+            <span class="title-word">File</span>
+            <span class="title-word">Metadata</span>
+            <span class="title-word">Microservice</span>
+          </h1>
+          <div class="subtitle-container">
+            <p class="subtitle">
+              Upload any file to analyze its metadata instantly
+            </p>
+            <div class="subtitle-glow"></div>
+          </div>
+        </div>
 
-   <body>
-      <div class="container">
-        <h1>API Project: File Metadata Microservice</h1>
+        <div class="upload-section">
+          <div class="upload-card">
+            <div class="upload-icon-container">
+              <svg
+                class="upload-icon"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17,8 12,3 7,8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+            </div>
 
-        <h2>Usage:</h2>
-        <p>
-          Please Upload a File ...
-        </p>
-        <div class="view">
-          <h3 id="output"></h3>
-          <form enctype="multipart/form-data" method="POST" action="/api/fileanalyse">
-            <input id="inputfield" type="file" name="upfile">
-            <input id="button" type="submit" value="Upload">
-          </form>
+            <form
+              enctype="multipart/form-data"
+              method="POST"
+              action="/api/fileanalyse"
+              class="upload-form"
+            >
+              <div class="file-input-container">
+                <input
+                  type="file"
+                  name="upfile"
+                  id="fileInput"
+                  class="file-input"
+                />
+                <label for="fileInput" class="file-label">
+                  <span class="file-label-text">Choose File</span>
+                  <span class="file-label-subtext">or drag and drop</span>
+                </label>
+              </div>
+
+              <button type="submit" class="upload-button" id="uploadBtn">
+                <span class="button-text">Analyze File</span>
+                <div class="button-shimmer"></div>
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div class="output-section">
+          <div class="output-card">
+            <h3 id="output" class="output-text">Ready to analyze your file</h3>
+            <div class="output-glow"></div>
+          </div>
         </div>
       </div>
+
       <div class="footer">
-        <p>
-          by 
-          <a href="http://www.freecodecamp.com">freeCodeCamp</a>
+        <p class="footer-text">
+          Crafted with ❤️ by
+          <a href="http://www.freecodecamp.com" class="footer-link"
+            >freeCodeCamp</a
+          >
         </p>
       </div>
-   </body>
+    </div>
+
+    <script>
+      // File input enhancement
+      const fileInput = document.getElementById("fileInput");
+      const fileLabel = document.querySelector(".file-label-text");
+      const uploadBtn = document.getElementById("uploadBtn");
+      const outputText = document.getElementById("output");
+
+      fileInput.addEventListener("change", function (e) {
+        if (e.target.files.length > 0) {
+          const fileName = e.target.files[0].name;
+          fileLabel.textContent = fileName;
+          outputText.textContent = `File "${fileName}" selected - ready to analyze`;
+
+          // Add selected state
+          document
+            .querySelector(".file-input-container")
+            .classList.add("file-selected");
+          uploadBtn.classList.add("file-ready");
+        }
+      });
+
+      // Click particle effect
+      function createClickParticles(e) {
+        const particles = [];
+        const colors = [
+          "#667eea",
+          "#764ba2",
+          "#f093fb",
+          "#f5576c",
+          "#4facfe",
+          "#00f2fe",
+        ];
+
+        for (let i = 0; i < 6; i++) {
+          const particle = document.createElement("div");
+          particle.className = "click-particle";
+          particle.style.left = e.clientX + "px";
+          particle.style.top = e.clientY + "px";
+          particle.style.backgroundColor =
+            colors[Math.floor(Math.random() * colors.length)];
+
+          const angle = (Math.PI * 2 * i) / 6;
+          const velocity = 100 + Math.random() * 50;
+          const vx = Math.cos(angle) * velocity;
+          const vy = Math.sin(angle) * velocity;
+
+          particle.style.setProperty("--dx", vx + "px");
+          particle.style.setProperty("--dy", vy + "px");
+
+          document.body.appendChild(particle);
+          particles.push(particle);
+
+          setTimeout(() => {
+            particle.remove();
+          }, 1000);
+        }
+      }
+
+      // Add click effects to interactive elements
+      document
+        .querySelectorAll(".upload-button, .file-label")
+        .forEach((element) => {
+          element.addEventListener("click", createClickParticles);
+        });
+
+      // Drag and drop enhancement
+      const uploadCard = document.querySelector(".upload-card");
+
+      ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+        uploadCard.addEventListener(eventName, preventDefaults, false);
+      });
+
+      function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+
+      ["dragenter", "dragover"].forEach((eventName) => {
+        uploadCard.addEventListener(eventName, highlight, false);
+      });
+
+      ["dragleave", "drop"].forEach((eventName) => {
+        uploadCard.addEventListener(eventName, unhighlight, false);
+      });
+
+      function highlight(e) {
+        uploadCard.classList.add("drag-over");
+      }
+
+      function unhighlight(e) {
+        uploadCard.classList.remove("drag-over");
+      }
+
+      uploadCard.addEventListener("drop", handleDrop, false);
+
+      function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        fileInput.files = files;
+
+        if (files.length > 0) {
+          const fileName = files[0].name;
+          fileLabel.textContent = fileName;
+          outputText.textContent = `File "${fileName}" dropped - ready to analyze`;
+          document
+            .querySelector(".file-input-container")
+            .classList.add("file-selected");
+          uploadBtn.classList.add("file-ready");
+        }
+      }
+
+      // Animate title words on load
+      window.addEventListener("load", () => {
+        const titleWords = document.querySelectorAll(".title-word");
+        titleWords.forEach((word, index) => {
+          setTimeout(() => {
+            word.style.animation =
+              "slideInUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards";
+          }, index * 200);
+        });
+      });
+    </script>
+  </body>
 </html>
